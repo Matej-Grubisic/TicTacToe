@@ -51,6 +51,10 @@ public class TicTacViewController implements Initializable
             if (game.play(c, r))
             {
                 int player = game.getNextPlayer();
+                Button btn = (Button) event.getSource();
+                String xOrO = player == 0 ? "X" : "O";
+                //System.out.println(xOrO);
+                btn.setText(xOrO);
                 if (game.isGameOver())
                 {
                     int winner = game.getWinner();
@@ -59,10 +63,7 @@ public class TicTacViewController implements Initializable
                 else
                 {
 
-                    Button btn = (Button) event.getSource();
-                    String xOrO = player == 0 ? "X" : "O";
-                    //System.out.println(xOrO);
-                    btn.setText(xOrO);
+
                     setPlayer();
                 }
             }
@@ -76,8 +77,10 @@ public class TicTacViewController implements Initializable
     private void handleNewGame(ActionEvent event)
     {
         game.newGame();
+        currentPlayer = "X";
         setPlayer();
         clearBoard();
+
     }
 
     @Override

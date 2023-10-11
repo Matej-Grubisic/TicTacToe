@@ -21,11 +21,14 @@ public class GameBoard implements IGameModel
 
     private int posPlayer = 2;
 
+    private int winner;
+
     int[] checkX = new int[]{2, 2, 2};
     int[] checkY = new int[]{3,3,3};
 
+    private int movecount = 0;
+
     int n = 3;
-    private String winner;
 
 
     /**
@@ -81,11 +84,17 @@ public class GameBoard implements IGameModel
     public boolean isGameOver() {
         // Assuming 'n' is the size of the Tic-Tac-Toe grid (typically 3)
         int gridSize = n;
+        movecount++;
 
         // Check rows, columns, and diagonals
         for (int i = 0; i < gridSize; i++) {
             // Check rows
-            if (Arrays.equals(posArray[i], checkX) || Arrays.equals(posArray[i], checkY)) {
+            if (Arrays.equals(posArray[i], checkX)) {
+                winner = 0;
+                return true;
+            }
+            else if(Arrays.equals(posArray[i], checkY)){
+                winner = 1;
                 return true;
             }
 
@@ -94,7 +103,12 @@ public class GameBoard implements IGameModel
             for (int j = 0; j < gridSize; j++) {
                 column[j] = posArray[j][i];
             }
-            if (Arrays.equals(column, checkX) || Arrays.equals(column, checkY)) {
+            if (Arrays.equals(column, checkX)) {
+                winner = 0;
+                return true;
+            }
+            else if(Arrays.equals(column, checkY)){
+                winner = 1;
                 return true;
             }
         }
@@ -104,7 +118,13 @@ public class GameBoard implements IGameModel
         for (int i = 0; i < gridSize; i++) {
             mainDiagonal[i] = posArray[i][i];
         }
-        if (Arrays.equals(mainDiagonal, checkX) || Arrays.equals(mainDiagonal, checkY)) {
+
+        if (Arrays.equals(mainDiagonal, checkX)) {
+            winner = 0;
+            return true;
+        }
+        else if(Arrays.equals(mainDiagonal, checkY)){
+            winner = 1;
             return true;
         }
 
@@ -113,9 +133,21 @@ public class GameBoard implements IGameModel
         for (int i = 0; i < gridSize; i++) {
             secondaryDiagonal[i] = posArray[i][gridSize - 1 - i];
         }
-        if (Arrays.equals(secondaryDiagonal, checkX) || Arrays.equals(secondaryDiagonal, checkY)) {
+
+        if (Arrays.equals(secondaryDiagonal, checkX)) {
+            winner = 0;
             return true;
         }
+        else if (Arrays.equals(secondaryDiagonal, checkY)){
+            winner = 1;
+            return true;
+        }
+
+        if(movecount == 9){
+            winner = -1;
+            return true;
+        }
+
 
         // If no match is found in rows, columns, or diagonals, return false
         return false;
@@ -133,7 +165,7 @@ public class GameBoard implements IGameModel
     {
         //TODO Implement this method
 
-        return -1;
+        return winner;
     }
 
     /**
@@ -145,8 +177,11 @@ public class GameBoard implements IGameModel
     {
         for(int i = 0; i < posArray.length; i++){
             Arrays.fill(posArray[i], 0);
+            System.out.println(Arrays.toString(posArray[i]));
         }
         currentPlayer = 0;
+        posPlayer = 2;
+        movecount = 0;
         //TODO Implement this method
     }
 
